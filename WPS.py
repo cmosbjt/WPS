@@ -10,6 +10,7 @@ import re
 import requests
 from requests.exceptions import RequestException
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 def GetPoetry(name):
     '''
@@ -59,22 +60,32 @@ def get_magzine_url():
     except:
         return -1
 
-url = "https://magazinelib.com/all/visual-merchandising-and-retail-design-august-2018/"    
-headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36'}
-try:
-    response = requests.get(url,headers = headers)                  
-#    response.encoding = 'utf-8'                        #解决中文乱码
-    if response.status_code == 200:                     #判断是否爬取网页成功
-        html = response.text #get raw web page
-        print(html)
-#        obj = 'https://magazinelib.com/all/[^\"]+'
-#        pattern = re.compile(obj)
-#        match = pattern.findall(html)
 
-except:
-    pass
+def get_pdf_url(url):
+    obj = webdriver.PhantomJS(executable_path="C:/phantomjs_2_1/bin/phantomjs.exe")
+    try:
+        obj.set_page_load_timeout(5)
+        obj.get(url)
+        obj.implicitly_wait(10)
+        html = obj.page_source
+        pattern = r'(?<=\"vk-att-item\"><a href=\")([^\"]+)'
+        obj = re.compile(pattern)
+        match = obj.findall(html)
+        if len(match):
+            print(match[0])
+    #        obj.quit() 
+            return match[0]
+        else:
+            return -2
+    except Exception as e:
+        print(e)
+        return -1
 
-if __name__ == "__main__":
-    print(GetPoetry('千树万树梨花开'))
-#    s = get_magzine_url()
     
+if __name__ == "__main__":
+#    print(GetPoetry('千树万树梨花开'))
+    s = get_magzine_url()
+    print(len(s))
+    for url in s:
+       b = get_pdf_url(url) 
+   
