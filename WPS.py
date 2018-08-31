@@ -75,15 +75,16 @@ def download_pdf(url, file_name):
         
     
 if __name__ == "__main__":
-    s = get_magzine_url()
-    print(len(s))
     cnt = 0
+    s = get_magzine_url()
+    print('更新了 ',len(s),' 条记录')
+    
     for url in s:
-       cnt = cnt+1
-       if cnt > 3:
-           break
-       pdf_url, pdf_head = get_pdf_url(url)
+#       cnt = cnt+1  #此处只是为了测试，减少循环次数
+#       if cnt > 2:
+#           break
+       pdf_url, pdf_head = get_pdf_url(url) #此处获取pdf链接地址
        if pdf_url == -2 or pdf_url == -1:
-           print('cannot get this pdf_url')
+           print('获取链接地址失败') #出错处理
            continue
-       download_pdf(pdf_url, pdf_head)
+       download_pdf(pdf_url, pdf_head) #此处下载到本地
