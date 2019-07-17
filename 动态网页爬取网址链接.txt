@@ -1,0 +1,5 @@
+Scrapy如何实现抓取动态网页
+https://blog.csdn.net/zcc_0015/article/details/50814431
+
+超级易懂爬虫系列之使用scrapy爬取动态网页
+https://www.aliyun.com/jiaocheng/527097.html
